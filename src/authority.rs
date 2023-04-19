@@ -305,12 +305,27 @@ where
         header_key: &str,
     ) -> AuthResult<Token<Claims>> {
         match header_map.get(header_key).map(HeaderValue::to_str) {
-            Some(Ok(token_value)) => validate_jwt(
-                &token_value,
-                &self.algorithm,
-                &self.verifying_key,
-                &self.time_options,
-            ),
+            Some(Ok(token_value)) => {
+                let tokens = token_value.split(",");
+                let mut t = String::from("");
+                
+                for token in tokens.into_iter() {
+                    let token = token.trim();
+                    if token.starts_with("Bearer ") {
+                        t = token.replace("Bearer ", "");
+                        break;
+                    }
+                }
+                if t.len() == 0 {
+                    return Err(AuthError::NoToken)
+                }
+                validate_jwt(
+                    &t,
+                    &self.algorithm,
+                    &self.verifying_key,
+                    &self.time_options,
+                )
+            }
             Some(_) | None => Err(AuthError::NoToken),
         }
     }

@@ -29,7 +29,7 @@ use_jwt_on_resource = []
 
 [dependencies]
 serde = "1.0.145"
-derive_builder = "0.11.2"
+derive_builder = "0.12.0"
 chrono = "0.4.22"
 form_urlencoded = "1.1.0"
 
@@ -43,10 +43,7 @@ default_features = false
 features = ["cookies"]
 
 [dependencies.jwt-compact]
-git = "https://github.com/slowli/jwt-compact"
-rev = "b36dc02"
-default-features = false
-features = ["std", "clock"]
+features = ["ed25519-compact"]
 
 [dev-dependencies]
 exonum-crypto = "1.0.0"
@@ -60,6 +57,4 @@ default-features = true
 features = ["derive"]
 
 [dev-dependencies.jwt-compact]
-git = "https://github.com/slowli/jwt-compact"
-rev = "b36dc02"
-features = ["exonum-crypto"]
+features = ["ed25519-compact"]
